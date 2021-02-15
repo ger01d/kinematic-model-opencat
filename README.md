@@ -2,7 +2,7 @@
 
 This is an inverse kinematic model and gait generator for the opencat project.
 
-![](nybble_moving.gif)
+![](Nybble_moving.gif)
 
 
 
