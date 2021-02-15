@@ -1,5 +1,6 @@
-# hello-world
-how it all started
+# inverse_kinematic_model_opencat
 
-lorem ipsum 
+This is an inverse kinematic model for the opencat project, based on the IKPY library.
+
+
 
