@@ -248,6 +248,7 @@ for frame in range(0, frames):
 
     figureName = "Nybble_" + str(frame)
     plt.savefig(figureName)
+    plt.close()
 
     #plt.show()
 
