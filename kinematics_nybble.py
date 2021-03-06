@@ -14,7 +14,7 @@ armLength   =    5
 bodyLength  =   12
 bodyWidth   =   10     
 distanceFloor = 7
-stepLength = 6.0
+stepLength = 5.0
 swingHeight = 0.3
 
 leanLeft = 0           # Not working, yet
@@ -174,7 +174,7 @@ def buildGait(frames):
     return longitudinalMovement, verticalMovement
 
 
-frames = 24
+frames = 43
 longitudinalMovement, verticalMovement = buildGait(frames)
 plt.plot(longitudinalMovement)
 plt.plot(verticalMovement)
@@ -187,9 +187,9 @@ plt.show()
 #    [1,1,1,1,1, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0], # RA
 
 # Phase shift between arms/legs, [RA, RL, LA, LL]
-#shiftFrame = np.round(np.array([0, pi/2, pi, 3*pi/2])/2/pi*frames)
+shiftFrame = np.round(np.array([0, pi/2, pi, 3*pi/2])/2/pi*frames)
 #shiftFrame = np.round(np.array([0, 0, pi, pi])/2/pi*frames)
-shiftFrame = np.round(np.array([0, pi, pi, 0])/2/pi*frames)
+#shiftFrame = np.round(np.array([0, pi, pi, 0])/2/pi*frames)
 
 shiftFrame = shiftFrame.astype(int)
 
