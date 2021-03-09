@@ -19,7 +19,7 @@ lowerArmLength = 4.8
 bodyLength     = 10.5
 bodyWidth      = 9.7
 # values you can tweak
-distanceFloor  = 5
+distanceFloor  = 6.5
 stepLength     = 5
 swingHeight    = 0.5
 
