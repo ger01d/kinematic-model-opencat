@@ -9,11 +9,11 @@ This is an inverse kinematic model and gait generator for the OpenCat project ba
 ![Bittle](Bittle_moving.gif)
 
 ## Usage and Tweaks
-For best results change the optimization algorithm in IKPY from "L-BFGS-B" to "SLSQP". 
+For best results change the optimization algorithm in IKPY from _L-BFGS-B_ to _SLSQP_. 
 
-"inverse_kinematics.py" line 134 from "L-BFGS-B" to e.g. "SLSQP".
+_inverse_kinematics.py_ line 134 from _L-BFGS-B_ to _SLSQP_.
 
-res = scipy.optimize.minimize(optimize_total, chain.active_from_full(starting_nodes_angles), method='SLSQP', bounds=real_bounds, options=options)
+`res = scipy.optimize.minimize(optimize_total, chain.active_from_full(starting_nodes_angles), method='SLSQP', bounds=real_bounds, options=options)`
 
 
 
