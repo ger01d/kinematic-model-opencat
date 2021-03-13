@@ -1,6 +1,6 @@
 # Inverse Kinematic Model OpenCat
 
-This is an inverse kinematic model and gait generator for the OpenCat project based on the IKPY library.
+This is an inverse kinematic model and gait generator for the OpenCat project based on the IKPY library (http://phylliade.github.io/ikpy).
 
 ## Nybble-Version
 ![Nybble](Nybble_moving.gif) 
