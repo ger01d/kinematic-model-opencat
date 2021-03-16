@@ -8,26 +8,34 @@ import numpy as np
 from numpy import sin, cos, pi
 import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as p3
-import scipy
+
 
 deg2rad = pi/180
 rad2deg = 180/pi
 
-# bittle dimensions from manual (should not be changed - values in cm)
-upperArmLength = 4.6
-lowerArmLength = 4.8
+# Dimensions Bittle (should not be changed - all values in cm)
+upperArmLength = 4.5
+lowerArmLength = 5.0
 bodyLength     = 10.5
 bodyWidth      = 9.7
-# values you can tweak
-distanceFloor  = 6.5
-stepLength     = 5
-swingHeight    = 0.5
 
-# URDF bittle model
+# Variable parameters
+distanceFloor  = 6.0    # Distance torso to floor
+stepLength     = 3.5    # Longitudinal movement of each paw within one period
+swingHeight    = 0.5    # Amplitude for swing
+swingFactorLegs = 5     # Increase swing amplitude for legs
+leanForward =  0.0      # Shifting torso in x-direction
+stanceFront = 0.0       # Distance of front paws from shoulder in x-direction
+stanceBack = 3          # Distance of back paws from hip in negative x-direction
+
+# Number of Frames
+frames = 57
+
+# Kinematic chain of Bittle
 left_arm = Chain(name='left_arm', links=[
     URDFLink(
       name="center",
-      translation_vector=[0, 0, distanceFloor],
+      translation_vector=[leanForward, 0, distanceFloor],
       orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
@@ -56,7 +64,7 @@ left_arm = Chain(name='left_arm', links=[
 right_arm = Chain(name='right_arm', links=[
     URDFLink(
       name="center",
-      translation_vector=[0, 0, distanceFloor],
+      translation_vector=[leanForward, 0, distanceFloor],
       orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
@@ -85,7 +93,7 @@ right_arm = Chain(name='right_arm', links=[
 left_leg = Chain(name='left_leg', links=[
     URDFLink(
       name="center",
-      translation_vector=[0, 0, distanceFloor],
+      translation_vector=[leanForward, 0, distanceFloor],
       orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
@@ -100,14 +108,14 @@ left_leg = Chain(name='left_leg', links=[
       translation_vector=[0, bodyWidth/2, 0],
       orientation=[0, 0, 0],
       rotation=[0, 1, 0],
-      bounds=(0.1*deg2rad, 179.9*deg2rad),
+      bounds=(0.1*deg2rad, 200*deg2rad),
     ),
     URDFLink(
       name="upperLeg",
       translation_vector=[upperArmLength, 0, 0],
       orientation=[0, 0, 0],
       rotation=[0, 1, 0],
-      bounds=(-179.9*deg2rad, -0.1*deg2rad),
+      bounds=(-200*deg2rad, -0.1*deg2rad),
     ),
     URDFLink(
       name="lowerLeg",
@@ -120,7 +128,7 @@ left_leg = Chain(name='left_leg', links=[
 right_leg = Chain(name='right_leg', links=[
     URDFLink(
       name="center",
-      translation_vector=[0, 0, distanceFloor],
+      translation_vector=[leanForward, 0, distanceFloor],
       orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
@@ -135,14 +143,14 @@ right_leg = Chain(name='right_leg', links=[
       translation_vector=[ 0, -bodyWidth/2, 0],
       orientation=[0, 0, 0],
       rotation=[0, 1, 0],
-      bounds=(0.1*deg2rad, 179.9*deg2rad),
+      bounds=(0.1*deg2rad, 200*deg2rad),
     ),
     URDFLink(
       name="upperLeg",
       translation_vector=[upperArmLength, 0, 0],
       orientation=[0, 0, 0],
       rotation=[0, 1, 0],
-      bounds=(-179.9*deg2rad, -0.1*deg2rad),
+      bounds=(-200*deg2rad, -0.1*deg2rad),
     ),
     URDFLink(
       name="lowerLeg",
@@ -158,21 +166,20 @@ def buildGait(frames):
 
     # longitudinal Movement
     swing = -cos(2*(frame*2*pi/frames))
-    stance = cos(2/3*(frame*2*pi/frames-swingEnd))
+    stance = +cos(2/3*(frame*2*pi/frames-swingEnd))
     swingSlice = np.less_equal(frame,swingEnd/(2*pi/frames))
     stanceSlice = np.invert(swingSlice)
     longitudinalMovement = np.concatenate((swing[swingSlice], stance[stanceSlice]))    
     longitudinalMovement = np.concatenate((longitudinalMovement,longitudinalMovement, longitudinalMovement, longitudinalMovement))
     
     # vertical Movement
-    lift = sin(2*(frame*2*pi/frames))
+    lift = sin(2*(frame*2*pi/frames)) #np.ones(frames)
     liftSlice = swingSlice
     verticalMovement = np.concatenate((lift[liftSlice], np.zeros(np.count_nonzero(stanceSlice))))
     verticalMovement = np.concatenate((verticalMovement, verticalMovement, verticalMovement, verticalMovement))
     return longitudinalMovement, verticalMovement
 
 
-frames = 43
 longitudinalMovement, verticalMovement = buildGait(frames)
 plt.plot(longitudinalMovement)
 plt.plot(verticalMovement)
@@ -180,28 +187,30 @@ plt.show()
 plt.close()
 
 shiftFrame = np.round(np.array([0, pi/2, pi, 3*pi/2])/2/pi*frames)
+#shiftFrame = np.round(np.array([0, pi, pi, 0])/2/pi*frames)
+#shiftFrame = np.round(np.array([0, 0, pi, pi])/2/pi*frames)
 shiftFrame = shiftFrame.astype(int)
 
 for frame in range(0, frames):
-    right_arm_angles_raw = right_arm.inverse_kinematics(target_position = np.array([stepLength*longitudinalMovement[frame], -bodyWidth/2 ,swingHeight*verticalMovement[frame]]))
+    right_arm_angles_raw = right_arm.inverse_kinematics(target_position = np.array([stanceFront+stepLength*longitudinalMovement[frame], -bodyWidth/2 ,swingHeight*verticalMovement[frame]]))
     right_arm_correction = np.array([0, -pi/2, pi/2, 0])
     right_arm_angles = np.round(rad2deg*(right_arm_angles_raw+right_arm_correction))
     right_arm_angles = np.delete(right_arm_angles, np.s_[0,3], axis=0)
     right_arm_angles = right_arm_angles.astype(int)
 
-    right_leg_angles_raw = right_leg.inverse_kinematics(target_position = np.array([-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[1]], -bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[1]]]))    
+    right_leg_angles_raw = right_leg.inverse_kinematics(target_position = np.array([-stanceBack-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[1]], -bodyWidth/2 , swingFactorLegs*swingHeight*verticalMovement[frame+shiftFrame[1]]]))    
     right_leg_correction = np.array([0, 0, -pi/2, pi/2, 0])
     right_leg_angles = np.round(rad2deg*(right_leg_angles_raw+right_leg_correction))
     right_leg_angles = np.delete(right_leg_angles, np.s_[0,1,4], axis=0)
     right_leg_angles = right_leg_angles.astype(int)
 
-    left_arm_angles_raw = left_arm.inverse_kinematics(target_position = np.array([stepLength*longitudinalMovement[frame+shiftFrame[2]], +bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[2]]]))
+    left_arm_angles_raw = left_arm.inverse_kinematics(target_position = np.array([stanceFront+stepLength*longitudinalMovement[frame+shiftFrame[2]], +bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[2]]]))
     left_arm_correction = np.array([0, -pi/2, pi/2, 0])
     left_arm_angles = np.round(rad2deg*(left_arm_angles_raw+left_arm_correction))
     left_arm_angles = np.delete(left_arm_angles, np.s_[0,3], axis=0)
     left_arm_angles = left_arm_angles.astype(int)
 
-    left_leg_angles_raw = left_leg.inverse_kinematics(target_position = np.array([-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[3]], +bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[3]]]))
+    left_leg_angles_raw = left_leg.inverse_kinematics(target_position = np.array([-stanceBack-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[3]], +bodyWidth/2 , swingFactorLegs*swingHeight*verticalMovement[frame+shiftFrame[3]]]))
     left_leg_correction = np.array([0, 0, -pi/2, pi/2, 0])
     left_leg_angles = np.round(rad2deg*(left_leg_angles_raw+left_leg_correction))
     left_leg_angles = np.delete(left_leg_angles, np.s_[0,1,4],axis=0)
@@ -212,9 +221,9 @@ for frame in range(0, frames):
     gait_sequence = np.concatenate((left_arm_angles, right_arm_angles, right_leg_angles, left_leg_angles))
     print(frame," ",gait_sequence)
     f = open("gait_sequence.csv", "a")
-    #f.write("#")
-    np.savetxt(f, gait_sequence[[0,2,4,6,1,3,5,7]],  fmt='%3.1i', delimiter=',', newline=", ")
-    #f.write("+")
+    #f.write("[")
+    np.savetxt(f, gait_sequence[[0,2,4,6,1,3,5,7]],  fmt='%3.1i', delimiter=',', newline=', ')
+    #f.write("],")
     f.write("\n") 
     f.close()
     
@@ -239,3 +248,4 @@ for frame in range(0, frames):
     plt.savefig(figureName)
     plt.close()
     #plt.show()
+
