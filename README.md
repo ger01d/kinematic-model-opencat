@@ -9,11 +9,9 @@ This is an inverse kinematic model and gait generator for the OpenCat project ba
 ![Bittle](Bittle_moving.gif)
 
 ## Usage and Tweaks
-For best results change the optimization algorithm in IKPY from _L-BFGS-B_ to _SLSQP_. 
+Simply run the script with python kinematics_bittle.py or kinematics_nybble.py. At first you will see a plot of the vertical and horizontal movement. After closing this window, the script will generate the joint angles, that can be directly used for the instincts.h in OpenCat.
 
-_inverse_kinematics.py_ line 134 from _L-BFGS-B_ to _SLSQP_.
 
-`res = scipy.optimize.minimize(optimize_total, chain.active_from_full(starting_nodes_angles), method='SLSQP', bounds=real_bounds, options=options)`
-
+Please make sure that you install the required packages in requirements.txt.
 
 
