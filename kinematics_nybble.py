@@ -24,28 +24,28 @@ leanForward =  0       # cm
 left_arm = Chain(name='left_arm', links=[
     URDFLink(
       name="center",
-      translation_vector=[leanForward, 0, distanceFloor],
-      orientation=[0, 0, 0],
+      origin_translation=[leanForward, 0, distanceFloor],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
     URDFLink(
       name="shoulder",
-      translation_vector=[0, bodyWidth/2, leanLeft],
-      orientation=[0, 0, 0],
+      origin_translation=[0, bodyWidth/2, leanLeft],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
       bounds=(0.1*deg2rad, 179.9*deg2rad),
     ),
     URDFLink(
       name="upperArm",
-      translation_vector=[armLength, 0, 0   ],
-      orientation=[0, 0, 0],
+      origin_translation=[armLength, 0, 0   ],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
       bounds=(-179.9*deg2rad, -0.1*deg2rad),
     ),
     URDFLink(
       name="lowerArm",
-      translation_vector=[armLength, 0, 0],
-      orientation=[0, 0, 0],
+      origin_translation=[armLength, 0, 0],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     )
 
@@ -54,28 +54,28 @@ left_arm = Chain(name='left_arm', links=[
 right_arm = Chain(name='right_arm', links=[
     URDFLink(
       name="center",
-      translation_vector=[leanForward, 0, distanceFloor],
-      orientation=[0, 0, 0],
+      origin_translation=[leanForward, 0, distanceFloor],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
     URDFLink(
       name="shoulder",
-      translation_vector=[0, -bodyWidth/2, leanRight],
-      orientation=[0, 0, 0],
+      origin_translation=[0, -bodyWidth/2, leanRight],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
       bounds=(0.1*deg2rad, 179.9*deg2rad),
     ),
     URDFLink(
       name="upperArm",
-      translation_vector=[armLength, 0, 0],
-      orientation=[0,0,0],
+      origin_translation=[armLength, 0, 0],
+      origin_orientation=[0,0,0],
       rotation=[0,1,0],
       bounds=(-179.9*deg2rad, -0.1*deg2rad),
     ),
     URDFLink(
       name="lowerArm",
-      translation_vector=[armLength, 0, 0   ],
-      orientation=[0,0,0],
+      origin_translation=[armLength, 0, 0   ],
+      origin_orientation=[0,0,0],
       rotation=[0, 1, 0],
     )
 
@@ -84,34 +84,34 @@ right_arm = Chain(name='right_arm', links=[
 left_leg = Chain(name='left_leg', links=[
     URDFLink(
       name="center",
-      translation_vector=[leanForward, 0, distanceFloor],
-      orientation=[0, 0, 0],
+      origin_translation=[leanForward, 0, distanceFloor],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
     URDFLink(
       name="butt",
-      translation_vector=[-bodyLength, 0, 0],
-      orientation=[0, 0, 0],
+      origin_translation=[-bodyLength, 0, 0],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
     URDFLink(
       name="hip",
-      translation_vector=[0, bodyWidth/2, leanLeft],
-      orientation=[0, 0, 0],
+      origin_translation=[0, bodyWidth/2, leanLeft],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
       bounds=(0.1*deg2rad, 120*deg2rad),
     ),
     URDFLink(
       name="upperLeg",
-      translation_vector=[armLength, 0, 0   ],
-      orientation=[0, 0, 0],
+      origin_translation=[armLength, 0, 0   ],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
       bounds=(0.1*deg2rad, 179.9*deg2rad),
     ),
     URDFLink(
       name="lowerLeg",
-      translation_vector=[armLength, 0, 0   ],
-      orientation=[0, 0, 0],
+      origin_translation=[armLength, 0, 0   ],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
     )
 
@@ -120,34 +120,34 @@ left_leg = Chain(name='left_leg', links=[
 right_leg = Chain(name='right_leg', links=[
     URDFLink(
       name="center",
-      translation_vector=[leanForward, 0, distanceFloor],
-      orientation=[0, 0, 0],
+      origin_translation=[leanForward, 0, distanceFloor],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
     URDFLink(
       name="butt",
-      translation_vector=[-bodyLength, 0, 0],
-      orientation=[0, 0, 0],
+      origin_translation=[-bodyLength, 0, 0],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 0, 0],
     ),
     URDFLink(
       name="hip",
-      translation_vector=[ 0, -bodyWidth/2, leanRight],
-      orientation=[0, 0, 0],
+      origin_translation=[ 0, -bodyWidth/2, leanRight],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
       bounds=(0.1*deg2rad, 120*deg2rad),
     ),
     URDFLink(
       name="upperLeg",
-      translation_vector=[armLength, 0, 0   ],
-      orientation=[0, 0, 0],
+      origin_translation=[armLength, 0, 0   ],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
       bounds=(0.1*deg2rad, 179*deg2rad),
     ),
     URDFLink(
       name="lowerLeg",
-      translation_vector=[armLength, 0, 0],
-      orientation=[0, 0, 0],
+      origin_translation=[armLength, 0, 0],
+      origin_orientation=[0, 0, 0],
       rotation=[0, 1, 0],
     )
 
@@ -194,25 +194,25 @@ shiftFrame = np.round(np.array([0, pi/2, pi, 3*pi/2])/2/pi*frames)
 shiftFrame = shiftFrame.astype(int)
 
 for frame in range(0, frames):
-    right_arm_angles_raw = right_arm.inverse_kinematics(target_position = np.array([stepLength*longitudinalMovement[frame], -bodyWidth/2 ,swingHeight*verticalMovement[frame]]))
+    right_arm_angles_raw = right_arm.inverse_kinematics(target_position = np.array([stepLength*longitudinalMovement[frame], -bodyWidth/2 ,swingHeight*verticalMovement[frame]]), optimization_method='SLSQP')
     right_arm_correction = np.array([0, -pi/2, pi/2, 0])
     right_arm_angles = np.round(rad2deg*(right_arm_angles_raw+right_arm_correction))
     right_arm_angles = np.delete(right_arm_angles, np.s_[0,3], axis=0)
     right_arm_angles = right_arm_angles.astype(int)
 
-    right_leg_angles_raw = right_leg.inverse_kinematics(target_position = np.array([-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[1]], -bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[1]]]))    
+    right_leg_angles_raw = right_leg.inverse_kinematics(target_position = np.array([-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[1]], -bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[1]]]), optimization_method='SLSQP')    
     right_leg_correction = np.array([0, 0, -pi/2, -pi/2, 0])    
     right_leg_angles = np.round(rad2deg*(right_leg_angles_raw+right_leg_correction))
     right_leg_angles = np.delete(right_leg_angles, np.s_[0,1,4], axis=0)
     right_leg_angles = right_leg_angles.astype(int)
 
-    left_arm_angles_raw = left_arm.inverse_kinematics(target_position = np.array([stepLength*longitudinalMovement[frame+shiftFrame[2]], +bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[2]]]))
+    left_arm_angles_raw = left_arm.inverse_kinematics(target_position = np.array([stepLength*longitudinalMovement[frame+shiftFrame[2]], +bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[2]]]), optimization_method='SLSQP')
     left_arm_correction = np.array([0, -pi/2, pi/2, 0])     
     left_arm_angles = np.round(rad2deg*(left_arm_angles_raw+left_arm_correction))
     left_arm_angles = np.delete(left_arm_angles, np.s_[0,3], axis=0)
     left_arm_angles = left_arm_angles.astype(int)
 
-    left_leg_angles_raw = left_leg.inverse_kinematics(target_position = np.array([-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[3]], +bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[3]]]))
+    left_leg_angles_raw = left_leg.inverse_kinematics(target_position = np.array([-bodyLength+stepLength*longitudinalMovement[frame+shiftFrame[3]], +bodyWidth/2 , swingHeight*verticalMovement[frame+shiftFrame[3]]]), optimization_method='SLSQP')
     left_leg_correction = np.array([0, 0, -pi/2, -pi/2, 0])
     left_leg_angles = np.round(rad2deg*(left_leg_angles_raw+left_leg_correction))
     left_leg_angles = np.delete(left_leg_angles, np.s_[0,1,4],axis=0)
